@@ -21,7 +21,7 @@
         tenant_url: 'your-url'
         api_token: 'your-token'
         attach_rules:
-          entity_ids: 'SERVICE-FEF50497752EF96E,HOST-7CAE7FEDC34688F8'
+          entity_ids: 'SERVICE-ID,HOST-ID'
         deploymentVersion: '2.0'
         deploymentName: 'my name'
         deploymentProject: 'my project'

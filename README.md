@@ -16,8 +16,11 @@ dynatrace_deployment:
   deploymentName: 'my name'
 ```
 
+## Tests
 
+Find tests and examples in the `/tests` folder.
 
+<!--
 
 ## Run tests
 
@@ -29,5 +32,6 @@ Add ```-v``` or ```-vvv``` for verbose debugging output.
 $ ansible-playbook test-deployment.yml
 ```
 
+-->
 
 

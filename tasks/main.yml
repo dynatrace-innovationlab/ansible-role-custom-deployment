@@ -1,2 +1,14 @@
 ---
 # tasks file for dynatrace-modules
+
+- name: Attach deployment event 
+  dynatrace_deployment:
+    tenant_url: '{{tenant_url}}'
+    api_token: '{{api_token}}'
+    attach_rules: '{{attach_rules}}'
+      #tagRule: 
+      #  meTypes: '{{meTypes}}'
+      #  tags: '{{dt_tags}}'
+    deploymentVersion: '{{deploymentVersion}}'
+    deploymentName: '{{deploymentName}}'
+    deploymentProject: '{{deploymentProject}}'

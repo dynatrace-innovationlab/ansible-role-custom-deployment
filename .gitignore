@@ -4,4 +4,5 @@ modules/temp/
 modules/*-dynatrace.yml
 /*-dynatrace.yml
 tests/*-dynatrace.yml
+tasks/*-dynatrace.yml
 *.retry

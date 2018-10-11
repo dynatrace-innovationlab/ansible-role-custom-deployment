@@ -27,4 +27,23 @@ This role allows to send custom deployment information to Dynatrace.
       deploymentVersion: '1.2'
       attach_rules: 
         entity_ids: 'SERVICE-ID'
+        
+  - include_role:
+      name: dynatrace_deployment
+    vars: 
+      deploymentVersion: '1.3'
+      attach_rules: 
+        tagRule:
+            -
+              meTypes: ['SERVICE']
+              tags: 
+              -
+                context: 'CONTEXTLESS'
+                key: 'Deployment'
+                value: '10.1.0.5:80'
+      customProperties:
+          'CI Tool': 'Ansible'
+          'Build Number': '12321'
+          'Git Commit': '23422323233332'
+
 ```

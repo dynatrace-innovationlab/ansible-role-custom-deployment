@@ -2,7 +2,31 @@
 
 This role allows to send custom deployment information to Dynatrace.
 
-### Usage (Example):
+## Download
+
+The role is available via:
+
+- Ansible Galaxy
+- GitHub 
+
+## Configuration
+
+Please find below a list of variables that have to be configured:
+
+| Name              | Default            | Description
+|-------------------|--------------------|------------
+| tenant_url        |                    | URL of your Dynatrace tenant
+| api_token         |                    | API Token from your Dynatrace tenant
+| deploymentVersion | 0.1.0              | version of the artifact to be deployed
+| deploymentName    | Default Deployment | name of this deployment
+| deploymentProject | Default Project    | project this deployment belongs to
+| source            | Ansible            | source of this deployment
+| attach_rules      |                    | rules that describe to which entities this deployment event is attached to
+| remediationAction |                    | action that can be called in case of problems with this deployment
+| customProperties  |                    | custom properties for this deployment
+
+
+## Usage (Example):
 
 ```yaml
 - hosts: localhost

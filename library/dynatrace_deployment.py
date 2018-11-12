@@ -7,11 +7,11 @@
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
-
-ANSIBLE_METADATA = {'metadata_version': '1.0',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+ANSIBLE_METADATA = {
+    'metadata_version': '1.0',
+    'status': ['preview'],
+    'supported_by': 'community'
+}
 
 DOCUMENTATION = '''
 ---
@@ -88,80 +88,81 @@ def main():
             deploymentProject=dict(required=False),
             source=dict(required=False),
             remediationAction=dict(required=False),
-            customProperties=dict(required=False)
-        ),
+            customProperties=dict(required=False)),
         # required_one_of=[['app_name', 'application_id']],
-        supports_check_mode=True
-    )
+        supports_check_mode=True)
 
     # build list of params
     params = {}
 
-    for item in ["deploymentVersion", "remediationAction", "deploymentName", "deploymentProject", "source", "customProperties"]:
-      if module.params[item]:
-        params[item] = module.params[item]
+    for item in [
+            "deploymentVersion", "remediationAction", "deploymentName",
+            "deploymentProject", "source", "customProperties"
+    ]:
+        if module.params[item]:
+            params[item] = module.params[item]
 
     params["eventType"] = "CUSTOM_DEPLOYMENT"
-    
+
     ### parse attach rules
-    attachRules={}
+    attachRules = {}
     attachRulesVars = ast.literal_eval(module.params['attach_rules'])
 
-    entityIdsArr={}
+    entityIdsArr = {}
     if "entity_ids" in attachRulesVars:
-      entityIdsArr=attachRulesVars["entity_ids"].split(',')
-      attachRules["entityIds"] = entityIdsArr
+        entityIdsArr = attachRulesVars["entity_ids"].split(',')
+        attachRules["entityIds"] = entityIdsArr
 
-    tagRule={}
+    tagRule = {}
     if "tagRule" in attachRulesVars:
-      tagRule=attachRulesVars["tagRule"]
-      attachRules["tagRule"] = tagRule
+        tagRule = attachRulesVars["tagRule"]
+        attachRules["tagRule"] = tagRule
 
     params["attachRules"] = attachRules
     if "source" not in params:
-      params["source"] = "Ansible"
+        params["source"] = "Ansible"
     #if "source" in module.params and module.params["source"] is not None:
     #  params["source"] = module.params["source"]
-    
 
-    
-    customProperties={}
+    customProperties = {}
     if module.params["customProperties"]:
-      customPropsArr = ast.literal_eval(module.params['customProperties'])
-      params["customProperties"] = customPropsArr
-
+        customPropsArr = ast.literal_eval(module.params['customProperties'])
+        params["customProperties"] = customPropsArr
 
     # If we're in check mode, just exit pretending like we succeeded
     if module.check_mode:
-      module.exit_json(changed=True)
+        module.exit_json(changed=True)
 
     # Send the deployment info to Dynatrace
-    dt_url = module.params["tenant_url"] + "/api/v1/events/" #?Api-Token=" + module.params["api_token"]
+    dt_url = module.params[
+        "tenant_url"] + "/api/v1/events/"  #?Api-Token=" + module.params["api_token"]
     #data = urlencode(params)
     headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Api-Token ' + module.params['api_token']
+        'Content-Type': 'application/json',
+        'Authorization': 'Api-Token ' + module.params['api_token']
     }
-    
+
     ###### FAIL FOR DEBUG PURPOSES - TO INSPECT PAYLOAD #####
     #module.fail_json(msg=json.dumps(params))
     #########################################################
-    
+
     ####
     # SEND DEPLOYMENT EVENT TO DYNATRACE
     ####
     try:
-      response, info = fetch_url(module, dt_url, data=json.dumps(params), headers=headers)
-      
-      if info['status'] in (200, 201):
-        #module.exit_json(changed=True,meta=info)
-        module.exit_json(changed=True)
-      elif info['status'] == 401:
-        module.fail_json(msg="Token Authentification failed.")
-      else:
-        module.fail_json(msg="Unable to send deployment event to Dynatrace: %s" % info)
+        response, info = fetch_url(
+            module, dt_url, data=json.dumps(params), headers=headers)
+
+        if info['status'] in (200, 201):
+            #module.exit_json(changed=True,meta=info)
+            module.exit_json(changed=True)
+        elif info['status'] == 401:
+            module.fail_json(msg="Token Authentification failed.")
+        else:
+            module.fail_json(
+                msg="Unable to send deployment event to Dynatrace: %s" % info)
     except Exception as e:
-      module.fail_json(msg="Failure: " + e.message)
+        module.fail_json(msg="Failure: " + e.message)
 
 
 if __name__ == '__main__':

@@ -32,7 +32,7 @@ options:
     required: true
   attach_rules:
     description:
-      - Attach rules A complex structure that contains attachment rules that define which monitored entities the event is to be attached to.
+      - Complex structure that contains rules which monitored entities the event is to be attached to.
     required: true
   entity_ids:
     description:
@@ -67,7 +67,7 @@ EXAMPLES = '''
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.urls import fetch_url
-from ansible.module_utils.six.moves.urllib.parse import urlencode
+# from ansible.module_utils.six.moves.urllib.parse import urlencode
 import ast
 import json
 
@@ -104,7 +104,7 @@ def main():
 
     params["eventType"] = "CUSTOM_DEPLOYMENT"
 
-    ### parse attach rules
+    # parse attach rules
     attachRules = {}
     attachRulesVars = ast.literal_eval(module.params['attach_rules'])
 
@@ -121,10 +121,7 @@ def main():
     params["attachRules"] = attachRules
     if "source" not in params:
         params["source"] = "Ansible"
-    #if "source" in module.params and module.params["source"] is not None:
-    #  params["source"] = module.params["source"]
 
-    customProperties = {}
     if module.params["customProperties"]:
         customPropsArr = ast.literal_eval(module.params['customProperties'])
         params["customProperties"] = customPropsArr
@@ -135,20 +132,20 @@ def main():
 
     # Send the deployment info to Dynatrace
     dt_url = module.params[
-        "tenant_url"] + "/api/v1/events/"  #?Api-Token=" + module.params["api_token"]
-    #data = urlencode(params)
+        "tenant_url"] + "/api/v1/events/"  # ?Api-Token=" + module.params["api_token"]
+    # data = urlencode(params)
     headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Api-Token ' + module.params['api_token']
     }
 
-    ###### FAIL FOR DEBUG PURPOSES - TO INSPECT PAYLOAD #####
-    #module.fail_json(msg=json.dumps(params))
-    #########################################################
+    # FAIL FOR DEBUG PURPOSES - TO INSPECT PAYLOAD #####
+    # module.fail_json(msg=json.dumps(params))
+    #
 
-    ####
+    #
     # SEND DEPLOYMENT EVENT TO DYNATRACE
-    ####
+    #
     try:
         response, info = fetch_url(
             module, dt_url, data=json.dumps(params), headers=headers)

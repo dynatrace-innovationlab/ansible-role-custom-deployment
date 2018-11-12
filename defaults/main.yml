@@ -3,7 +3,7 @@
 
 deploymentName: 'Default Deployment'
 deploymentProject : 'Default Project'
-deploymentVersion: '1.0'
+deploymentVersion: '0.1.0'
 source: 'Ansible'
 remedationAction: ''
 customProperties: ''

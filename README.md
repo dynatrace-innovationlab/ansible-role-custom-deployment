@@ -1,13 +1,13 @@
 # Ansible Role: Dynatrace Deployment
 
-This role allows to send custom deployment information to Dynatrace.
+This role sends custom deployment information to Dynatrace.
 
 ## Download
 
 The role is available via:
 
 - Ansible Galaxy
-- GitHub 
+- GitHub
 
 ## Configuration
 
@@ -29,6 +29,7 @@ Please find below a list of variables that have to be configured:
 ## Usage (Example):
 
 ```yaml
+---
 - hosts: localhost
   vars:
     tenant_url: 'https://XXXXXX.live.dynatrace.com'
@@ -37,30 +38,30 @@ Please find below a list of variables that have to be configured:
 
   tasks:
   - include_role:
-      name: dynatrace_deployment
-    vars: 
+      name: dynatrace_deployment_event
+    vars:
       deploymentVersion: '1.1'
-      attach_rules: 
-        tagRule: 
+      attach_rules:
+        tagRule:
           meTypes: 'SERVICE'
           tags: 'ansible-deployment'
 
   - include_role:
-      name: dynatrace_deployment
-    vars: 
+      name: dynatrace_deployment_event
+    vars:
       deploymentVersion: '1.2'
-      attach_rules: 
+      attach_rules:
         entity_ids: 'SERVICE-ID'
-        
+
   - include_role:
-      name: dynatrace_deployment
-    vars: 
+      name: dynatrace_deployment_event
+    vars:
       deploymentVersion: '1.3'
-      attach_rules: 
+      attach_rules:
         tagRule:
             -
               meTypes: ['SERVICE']
-              tags: 
+              tags:
               -
                 context: 'CONTEXTLESS'
                 key: 'Deployment'
